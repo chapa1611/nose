@@ -6,6 +6,7 @@ class Vuelo(pygame.sprite.Sprite):
         self.animacion = False
         self.sprites = []
         self.sprites_invertidos = []
+        self.alive = True
 
         # Cargar y preparar las imágenes normales e invertidas
         for i in range(1, 10):
@@ -27,7 +28,7 @@ class Vuelo(pygame.sprite.Sprite):
         self.animacion = True
 
     def volar_derecha(self, speed):
-        if self.animacion:
+        if self.animacion and self.alive:
             self.sprite_actual += speed
             if int(self.sprite_actual) >= len(self.sprites):
                 self.sprite_actual = 0
@@ -50,7 +51,7 @@ class Vuelo(pygame.sprite.Sprite):
                 print(f"¡Se han completado {self.contador_movimientos} ciclos de 116 movimientos hacia la derecha!")
 
     def volar_izquierda(self, speed):
-        if self.animacion:
+        if self.animacion and self.alive:
             self.sprite_actual += speed
             if int(self.sprite_actual) >= len(self.sprites):
                 self.sprite_actual = 0
@@ -67,10 +68,15 @@ class Vuelo(pygame.sprite.Sprite):
             # Usar las imágenes invertidas
             self.image = self.sprites_invertidos[int(self.sprite_actual)]
             
-
-            #movimientos toales: 116, con 80 sirvio perfectamente
+            # movimientos totales: 116, con 80 sirvio perfectamente
             self.movimientos_totales += 1
             if self.movimientos_totales >= 90:
                 self.contador_movimientos += 1
                 self.movimientos_totales = 0
                 print(f"¡Se han completado {self.contador_movimientos} ciclos de 116 movimientos hacia la izquierda!")
+
+    def get_hitbox(self):
+        return self.rect.inflate(-10, -10)  # Ajusta el tamaño de la hitbox si es necesario
+
+    def caer(self):
+        self.rect.y += 10  # Ajusta esta velocidad de caída según sea necesario
