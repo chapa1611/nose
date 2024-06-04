@@ -1,16 +1,14 @@
-import pygame
+def handle_collisions(vuelo, mirilla, num_balas, score, mouse_pos):
+    # Verificar si el pájaro está dentro del área de la mirilla
+    if vuelo.get_hitbox().collidepoint(mouse_pos):
+        # Incrementar el puntaje si hay una colisión exitosa
+        score += 50
+        # Marcar al pájaro como derribado
+        vuelo.alive = False
+        print("¡Pájaro derribado!")
+        # Obtener la posición actual del pájaro
+        collision_pos = vuelo.rect.topleft
+        return num_balas, score, collision_pos
 
-def handle_collisions(pajaro, moving_sprites, mirilla, num_balas, score, mouse_pos):
-    if pajaro.get_hitbox().collidepoint(mouse_pos):
-        pajaro.alive = False
-        num_balas -= 1
-        score += 1
-    return num_balas, score
-
-class Colision:
-    def __init__(self, pajaro):
-        self.pajaro = pajaro
-
-    def check_collision(self, mouse_pos):
-        if self.pajaro.get_hitbox().collidepoint(mouse_pos):
-            self.pajaro.alive = False
+    # Si no hubo colisión, devolver los valores originales sin restar balas
+    return num_balas, score, None
